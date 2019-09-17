@@ -5,6 +5,7 @@ class Client extends Database
     public $id;
     public $firstName;
     public $lastName;
+    public $completed;
     public $meetingTime;
 
     public function __construct($id_client = null)
@@ -18,6 +19,7 @@ class Client extends Database
             $this->firstName = $userInfo['firstName'];
             $this->lastName = $userInfo['lastName'];
             $this->meetingTime = $userInfo['meetingTime'];
+            $this->completed = $userInfo['completed'];
         }
     }
 
@@ -45,6 +47,7 @@ class Client extends Database
                 meetingTime = '$this->meetingTime' 
                 WHERE id_client = $this->id
             ");
+            return true;
         } catch(PDOException $e) {
             die($e->getMessage());
         }
@@ -54,13 +57,20 @@ class Client extends Database
         try {
             $this->exec("
                 UPDATE client SET
-                completed = '1', 
+                completed = '1' 
                 WHERE id_client = $this->id
             ");
-            
+            return true;
         } catch(PDOException $e) {
             die($e->getMessage());
         }
+    }
+    static function getClients($order_by = 'meetingTime')
+    {
+        
+        $response = (new Database)->query("SELECT * FROM client WHERE completed = 0 ORDER BY $order_by ASC")->fetchAll();
+
+        return $response;
     }
 
 }
