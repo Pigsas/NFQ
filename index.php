@@ -9,16 +9,20 @@ if(!empty($_POST['submitClient']))
     $client = new Client;
     $client->firstName = $_POST['firstName'];
     $client->lastName = $_POST['lastName'];
-    $client->meetingTime = date('Y-m-d H:i');
+
     if($client->add())
     {
-        echo'
-        <div class="alert alert-success" role="alert">
-            Sveikiname! Sėkmingai užsiregistravote.
-        </div>
-        ';
+        $ticket = new Ticket;
+        $ticket->id_client = $client->id;
+        if($ticket->add())
+            echo'
+            <div class="alert alert-success" role="alert">
+                Sveikiname! Sėkmingai užsiregistravote.
+            </div>
+            ';
     }
 }
+
 
 ?>
 <div class="container p-5">

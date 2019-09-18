@@ -28,6 +28,7 @@ class Specialist extends Database
                 VALUES
                 ('$this->firstName', '$this->lastName')
             ");
+            $this->id = $this->lastInsertId();
             return true;
         } catch(PDOException $e) {
             die($e->getMessage());
