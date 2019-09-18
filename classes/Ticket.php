@@ -30,7 +30,9 @@ class Ticket extends Database
         {
             $this->meetingTime = date('Y-m-d H:i');
         }else{
-            $this->meetingTime =  $this->roundTime(date("Y-m-d H:i"), 5);
+            $dateTime = new DateTime();
+            $dateTime->modify('+5 minutes');
+            $this->meetingTime =  $dateTime->format("Y-m-d H:i");
         }
         try {
             $this->exec("
@@ -60,9 +62,14 @@ class Ticket extends Database
             die($e->getMessage());
         }
     }
-    public function roundTime($timestamp, $precision = 5) {
-        $timestamp = strtotime($timestamp);
-        $precision = 60 * $precision;
-        return date('Y-m-d H:i', round($timestamp / $precision) * $precision);
+    static function getTickets($id_specialist)
+    {
+        $data = (new Database)->query("
+            SELECT * 
+            FROM ticket 
+            WHERE id_specialist = '$id_specialist' AND completed = 0 
+            ORDER BY meetingTime DESC
+        ")->fetchAll();
+        return $data;
     }
 }
