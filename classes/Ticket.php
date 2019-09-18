@@ -82,4 +82,12 @@ class Ticket extends Database
         ")->fetchAll();
         return $data;
     }
+    public function meetingsDiff()
+    {
+        $date1 = new DateTime($this->meetingTime);
+        $date2 = new DateTime($this->meetingEnds);
+        $diff = $date1->diff($date2);
+
+        return $diff->i;
+    }
 }

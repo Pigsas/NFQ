@@ -20,6 +20,12 @@ if(!empty($_POST['submitClient']))
                 Sveikiname! Sėkmingai užsiregistravote.
             </div>
             ';
+        else
+            echo'
+            <div class="alert alert-danger" role="alert">
+                Įvyko klaida, kreipkitės telefonu.
+            </div>
+            ';
     }
 }
 
