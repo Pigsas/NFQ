@@ -9,6 +9,7 @@ if(!empty($_POST['clientComplete']))
 {
     $ticket = new Ticket($_POST['id_ticket']);
     $ticket->completed = 1;
+    $ticket->meetingEnds = date('Y-m-d H:i');
     if($ticket->update())
     {
 

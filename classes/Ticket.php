@@ -5,6 +5,7 @@ class Ticket extends Database
     public $id;
     public $completed;
     public $meetingTime;
+    public $meetingEnds;
     public $id_specialist = 1;
     public $id_client;
 
@@ -18,6 +19,7 @@ class Ticket extends Database
             $this->id = $ticketInfo['id_ticket'];
             $this->completed = $ticketInfo['completed'];
             $this->meetingTime = $ticketInfo['meetingTime'];
+            $this->meetingEnds = $ticketInfo['meetingEnds'];
             $this->id_specialist = $ticketInfo['id_specialist'];
             $this->id_client = $ticketInfo['id_client'];
 
@@ -26,11 +28,17 @@ class Ticket extends Database
 
     public function add()
     {
-        if(empty($this->query("SELECT 1 FROM ticket WHERE id_specialist = '$this->id_specialist' AND completed = 0 ORDER BY meetingTime DESC LIMIT 1")->fetch()))
+        if(empty($client = $this->query("SELECT meetingTime FROM ticket WHERE id_specialist = '$this->id_specialist' AND completed = 0 ORDER BY meetingTime DESC LIMIT 1")->fetch()))
         {
             $this->meetingTime = date('Y-m-d H:i');
         }else{
-            $dateTime = new DateTime();
+            $date1 = new DateTime($client['meetingTime']);
+            $date2 = new DateTime();
+            $diff = $date1->diff($date2);
+            if($diff->i >= 5)
+                $dateTime = $date2;
+            else
+                $dateTime = $date1;
             $dateTime->modify('+5 minutes');
             $this->meetingTime =  $dateTime->format("Y-m-d H:i");
         }
@@ -53,6 +61,7 @@ class Ticket extends Database
             $this->exec("
                 UPDATE ticket SET
                 meetingTime = '$this->meetingTime', 
+                meetingEnds = '$this->meetingEnds',
                 id_specialist = '$this->id_specialist', 
                 id_client = '$this->id_client', 
                 completed = '$this->completed' 
@@ -69,7 +78,7 @@ class Ticket extends Database
             SELECT * 
             FROM ticket 
             WHERE id_specialist = '$id_specialist' AND completed = 0 
-            ORDER BY meetingTime DESC
+            ORDER BY meetingTime ASC
         ")->fetchAll();
         return $data;
     }
