@@ -40,7 +40,7 @@ class Client extends Database
             $this->exec("
                 UPDATE client SET
                 firstName = '$this->firstName', 
-                lastName = '$this->lastName', 
+                lastName = '$this->lastName' 
                 WHERE id_client = $this->id
             ");
             return true;

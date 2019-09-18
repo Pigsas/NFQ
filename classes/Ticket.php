@@ -13,7 +13,7 @@ class Ticket extends Database
         parent::__construct();
         $ticketInfo = $this->query("SELECT * FROM ticket WHERE id_ticket = '$id_ticket'")->fetch();
         
-        if(!empty($specialistInfo))
+        if(!empty($ticketInfo))
         {
             $this->id = $ticketInfo['id_ticket'];
             $this->completed = $ticketInfo['completed'];
@@ -55,6 +55,7 @@ class Ticket extends Database
                 meetingTime = '$this->meetingTime', 
                 id_specialist = '$this->id_specialist', 
                 id_client = '$this->id_client', 
+                completed = '$this->completed' 
                 WHERE id_ticket = $this->id
             ");
             return true;

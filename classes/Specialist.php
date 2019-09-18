@@ -40,7 +40,7 @@ class Specialist extends Database
             $this->exec("
                 UPDATE specialist SET
                 firstName = '$this->firstName', 
-                lastName = '$this->lastName', 
+                lastName = '$this->lastName' 
                 WHERE id_specialist = $this->id
             ");
             return true;
