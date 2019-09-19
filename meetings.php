@@ -5,7 +5,7 @@ include 'view/templates/header.php';
 include 'includes/autoloader.php';
 include 'database.php';
 
-$Tickets = Ticket::getTickets(1);
+$Tickets = Ticket::getTickets(1, 10);
 
 ?>
 

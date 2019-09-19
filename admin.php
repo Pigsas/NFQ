@@ -16,7 +16,7 @@ if(!empty($_POST['clientComplete']))
     }
 }
 
-$Tickets = Ticket::getTickets(1);
+$Tickets = Ticket::getTickets(1,10);
 
 ?>
 
@@ -25,6 +25,12 @@ $Tickets = Ticket::getTickets(1);
         <?php foreach ($Tickets as $key => $ticket) { 
             if(empty($ticket['id_client']))
                 continue;
+            if($key == 0 && empty($ticket['meetingTime']))
+            {
+                $firstTicket = new Ticket($ticket['id_ticket']);
+                $firstTicket->meetingTime = date('Y-m-d H:i');
+                $firstTicket->update();
+            }
             $client = new Client($ticket['id_client']);
         ?>
             <?='
@@ -37,7 +43,7 @@ $Tickets = Ticket::getTickets(1);
                 </form>
                 ':'').'
                 <span class="float-right">
-                    '.$ticket['meetingTime'].'
+                    '.(empty($ticket['meetingTime'])?($key != 0?'':$firstTicket->meetingTime):$ticket['meetingTime']).'
                 </span>
             </li>
             '?>

@@ -4,8 +4,8 @@ class Ticket extends Database
 {
     public $id;
     public $completed;
-    public $meetingTime;
-    public $meetingEnds;
+    public $meetingTime = null;
+    public $meetingEnds = null;
     public $id_specialist = 1;
     public $id_client;
 
@@ -30,13 +30,13 @@ class Ticket extends Database
     {
         if(empty($client = $this->query("SELECT meetingTime FROM ticket WHERE id_specialist = '$this->id_specialist' AND completed = 0 ORDER BY meetingTime DESC LIMIT 1")->fetch()))
             $this->meetingTime = date('Y-m-d H:i');
-            
+
         try {
             $this->exec("
                 INSERT INTO ticket 
-                (meetingTime, id_specialist, id_client) 
+                (id_specialist, id_client) 
                 VALUES
-                ('$this->meetingTime', '$this->id_specialist', '$this->id_client')
+                ('$this->id_specialist', '$this->id_client')
             ");
             $this->id = $this->lastInsertId();
             return true;
@@ -50,7 +50,7 @@ class Ticket extends Database
             $this->exec("
                 UPDATE ticket SET
                 meetingTime = '$this->meetingTime', 
-                meetingEnds = '$this->meetingEnds',
+                meetingEnds = ".($this->meetingEnds?"'$this->meetingEnds'":"NULL").",
                 id_specialist = '$this->id_specialist', 
                 id_client = '$this->id_client', 
                 completed = '$this->completed' 
@@ -61,22 +61,45 @@ class Ticket extends Database
             die($e->getMessage());
         }
     }
-    static function getTickets($id_specialist)
+    static function getTickets($id_specialist, $limit = null)
     {
         $data = (new Database)->query("
             SELECT * 
             FROM ticket 
             WHERE id_specialist = '$id_specialist' AND completed = 0 
-            ORDER BY meetingTime ASC
+            ORDER BY meetingTime DESC 
+            ".($limit?"LIMIT $limit":"")."
         ")->fetchAll();
         return $data;
     }
-    public function meetingsDiff()
+    public function meetingsDiff($date1, $date2)
     {
-        $date1 = new DateTime($this->meetingTime);
-        $date2 = new DateTime($this->meetingEnds);
+        $date1 = new DateTime($date1);
+        $date2 = new DateTime($date2);
         $diff = $date1->diff($date2);
 
-        return $diff->i;
+        $minutes = $diff->days * 24 * 60;
+        $minutes += $diff->h * 60;
+        $minutes += $diff->i;
+
+        return $minutes;
+    }
+    public function averageTime(){
+        $times = $this->query("
+            SELECT meetingTime, meetingEnds 
+            FROM ticket 
+            WHERE id_specialist = '$this->id_specialist' AND 
+            completed = 1 AND 
+            DATE_FORMAT(meetingTime, '%Y-%m-%d') = DATE_FORMAT(meetingEnds, '%Y-%m-%d')
+            ")->fetchAll();
+        $timesdiff = [];
+
+        foreach ($times as $time) {
+            $timesdiff[] = $this->meetingsDiff($time['meetingTime'], $time['meetingEnds']);
+        }
+
+        $average = array_sum($timesdiff)/count($timesdiff);
+
+        return $average;
     }
 }

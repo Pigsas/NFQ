@@ -26,7 +26,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="./admin.php">Administracija</a>
                 </li>
-                
+                <li class="nav-item">
+                    <a class="nav-link" href="./client.php">Kliento panelė</a>
+                </li>
             </ul>
         </div>
     </nav>
