@@ -20,6 +20,7 @@ $Tickets = Ticket::getTickets(1,10);
 
 ?>
 
+
 <div class="container p-5">
     <ul class="list-group">
         <?php foreach ($Tickets as $key => $ticket) { 
@@ -48,6 +49,13 @@ $Tickets = Ticket::getTickets(1,10);
             </li>
             '?>
         
-        <?php } ?>
+        <?php }
+            if(empty($Tickets))
+            {
+        ?>
+        <li class="list-group-item text-center">Šuo metu nėra lankytojų</li>
+        <?php
+            }
+        ?>
     </ul>
 </div>
