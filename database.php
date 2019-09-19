@@ -26,7 +26,7 @@ $con->exec("
     CREATE TABLE IF NOT EXISTS ticket (
         id_ticket INT AUTO_INCREMENT PRIMARY KEY,
         completed TINYINT(1) NOT NULL DEFAULT '0',
-        meetingTime DATETIME NOT NULL,
+        meetingTime DATETIME NULL,
         meetingEnds DATETIME NULL,
         id_specialist INT NOT NULL,
         id_client INT NOT NULL

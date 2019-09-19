@@ -29,19 +29,8 @@ class Ticket extends Database
     public function add()
     {
         if(empty($client = $this->query("SELECT meetingTime FROM ticket WHERE id_specialist = '$this->id_specialist' AND completed = 0 ORDER BY meetingTime DESC LIMIT 1")->fetch()))
-        {
             $this->meetingTime = date('Y-m-d H:i');
-        }else{
-            $date1 = new DateTime($client['meetingTime']);
-            $date2 = new DateTime();
-            $diff = $date1->diff($date2);
-            if($diff->i >= 5)
-                $dateTime = $date2;
-            else
-                $dateTime = $date1;
-            $dateTime->modify('+5 minutes');
-            $this->meetingTime =  $dateTime->format("Y-m-d H:i");
-        }
+            
         try {
             $this->exec("
                 INSERT INTO ticket 
