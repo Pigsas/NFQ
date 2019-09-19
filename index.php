@@ -19,6 +19,9 @@ if(!empty($_POST['submitClient']))
             <div class="alert alert-success" role="alert">
                 Sveikiname! Sėkmingai užsiregistravote.
             </div>
+            <div class="alert alert-info" role="alert">
+                Nuoroda į kliento panelę <a href="./client.php?id='.$client->id.'">čia</a>.
+            </div>
             ';
         else
             echo'
