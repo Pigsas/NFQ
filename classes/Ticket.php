@@ -67,7 +67,7 @@ class Ticket extends Database
             SELECT * 
             FROM ticket 
             WHERE id_specialist = '$id_specialist' AND completed = 0 
-            ORDER BY meetingTime DESC 
+            ORDER BY id_ticket ASC 
             ".($limit?"LIMIT $limit":"")."
         ")->fetchAll();
         return $data;
@@ -90,7 +90,8 @@ class Ticket extends Database
             FROM ticket 
             WHERE id_specialist = '$this->id_specialist' AND 
             completed = 1 AND 
-            DATE_FORMAT(meetingTime, '%Y-%m-%d') = DATE_FORMAT(meetingEnds, '%Y-%m-%d')
+            DATE_FORMAT(meetingTime, '%Y-%m-%d') = DATE_FORMAT(meetingEnds, '%Y-%m-%d') AND 
+            DATE_FORMAT(meetingTime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
             ")->fetchAll();
         $timesdiff = [];
 

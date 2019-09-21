@@ -7,7 +7,7 @@ include 'database.php';
 
 $Tickets = Ticket::getTickets(1, 10);
 $averageTicket = new Ticket;
-$timeLeft = (sizeof($Tickets) >1)?"Sekančiam lankytojui laukti liko ".date('H:i', mktime(0,$averageTicket->averageTime()))." min.":"";
+$timeLeft = "Vidutinis laukimo laikas: ".date('H:i', mktime(0,$averageTicket->averageTime()))." min.";
 ?>
 
 <div class="container p-5">
