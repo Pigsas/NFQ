@@ -48,5 +48,13 @@ class Specialist extends Database
             die($e->getMessage());
         }
     }
+    static function getSpecialists()
+    {
+        $data = (new Database)->query("
+            SELECT * 
+            FROM specialist  
+        ")->fetchAll();
+        return $data;
+    }
 
 }

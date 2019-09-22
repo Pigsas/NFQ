@@ -22,6 +22,10 @@ class Client extends Database
     public function add()
     {
         try {
+            if(!preg_match("/^[a-zA-Z ]*$/", $this->firstName))
+                return "Neteisingas Vardo formatas !";
+            if(!preg_match("/^[a-zA-Z ]*$/", $this->lastName))
+                return "Neteisingas Pavardės formatas !";
             $this->exec("
                 INSERT INTO client 
                 (firstName, lastName) 

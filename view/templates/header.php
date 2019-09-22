@@ -30,7 +30,7 @@ date_default_timezone_set('Europe/Vilnius')
                     <a class="nav-link" href="./admin">Administracija</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./client">Kliento panelė</a>
+                    <a class="nav-link" href="./chart">Statistika</a>
                 </li>
             </ul>
         </div>

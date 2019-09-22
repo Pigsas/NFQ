@@ -6,7 +6,7 @@ class Ticket extends Database
     public $completed;
     public $meetingTime = null;
     public $meetingEnds = null;
-    public $id_specialist = 1;
+    public $id_specialist = null;
     public $id_client;
     public $position;
 
@@ -32,7 +32,8 @@ class Ticket extends Database
     {
         if(empty($client = $this->query("SELECT meetingTime FROM ticket WHERE id_specialist = '$this->id_specialist' AND completed = 0 ORDER BY meetingTime DESC LIMIT 1")->fetch()))
             $this->meetingTime = date('Y-m-d H:i');
-
+        if(empty((new Specialist($this->id_specialist))->id))
+            return "Tokio specialisto nėra";
         try {
             $this->exec("
                 INSERT INTO ticket 
