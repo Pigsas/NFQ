@@ -35,6 +35,11 @@ if(!empty($_GET['id']) && !empty($_GET['action']))
                 'text' => 'JŪSŲ APSILANKYMAS VYSTA DABAR !',
                 'id' => 3
             ];
+        elseif($ticket->completed == 2)
+            $message = [
+                'text' => 'JŪS ATŠAUKĖTE SUSITIKIMĄ !',
+                'id' => 5
+            ];
         else
         {
             $eile = array_search($id, array_column(Ticket::getTickets($ticket->id_specialist), 'id_ticket'));
@@ -52,6 +57,12 @@ if(!empty($_GET['id']) && !empty($_GET['action']))
         die($ticket->changeTime());
 
     }
+    if($_GET['action'] == "cancelTicket")
+    {   
+
+        die($ticket->cancelTicket());
+
+    }
 }
 
 include 'view/templates/header.php';
@@ -64,6 +75,7 @@ include 'view/templates/header.php';
     <ul class="list-group text-center" id="button">
         <li class="list-group-item">
             <button class="btn btn-primary" id="changeTime" onclick="changeTime()">Vėlinti susitikimą</button>
+            <button class="btn btn-danger" id="cancelTicket" onclick="cancelTicket()">Atšaukti susitikimą</button>
         </li>
         <li class="list-group-item" id="message"></li>
     </ul>
@@ -78,8 +90,10 @@ include 'view/templates/header.php';
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(ajax.responseText);
                 document.getElementById('message').innerHTML = response['text'];
-                if(response['id'] != 4)
+                if(response['id'] != 4){
                     document.getElementById('changeTime').disabled = true;
+                    document.getElementById('cancelTicket').disabled = true;
+                }
             }
         };
         ajax.send();
@@ -88,6 +102,20 @@ include 'view/templates/header.php';
     {
         var ajax = new XMLHttpRequest();
         ajax.open("GET", "./client?id=<?=$_GET['id']?>&action=changeTime", true);
+        ajax.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(ajax.responseText);
+                document.getElementById('alert').className = "alert alert-"+response['alert'];
+                document.getElementById('alert').innerHTML = response['text'];
+            }
+        };
+        ajax.send();
+        getMessage();
+    }
+    function cancelTicket()
+    {
+        var ajax = new XMLHttpRequest();
+        ajax.open("GET", "./client?id=<?=$_GET['id']?>&action=cancelTicket", true);
         ajax.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(ajax.responseText);

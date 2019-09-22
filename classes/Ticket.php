@@ -79,7 +79,7 @@ class Ticket extends Database
     {
         if(!empty($this->meetingTime) || !empty($this->meetingEnds))
             return json_encode([
-                'text' => "Jūsų jau buvote apsilankyme",
+                'text' => "Jūsų jau buvote arba esate apsilankyme",
                 'alert' => "danger"
             ]);
         if($this->getLastPosisiton() != $this->position)
@@ -103,6 +103,21 @@ class Ticket extends Database
                 'text' => "Jūs pasukutinis eilėje, apsilankymo laiko atidėti negalime",
                 'alert' => "danger"
             ]);
+    }
+    public function cancelTicket()
+    {
+        if(!empty($this->meetingTime) || !empty($this->meetingEnds))
+            return json_encode([
+                'text' => "Jūsų jau buvote arba esate apsilankyme",
+                'alert' => "danger"
+            ]);
+        
+            $this->completed = 2;
+            if($this->update())
+                return json_encode([
+                    'text' => "Jūsų apsilankymas buvo sėkmingai atšauktas",
+                    'alert' => "success"
+                ]);
     }
     public function meetingsDiff($date1, $date2)
     {
