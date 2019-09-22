@@ -29,6 +29,7 @@ $con->exec("
         meetingTime DATETIME NULL,
         meetingEnds DATETIME NULL,
         id_specialist INT NOT NULL,
-        id_client INT NOT NULL
+        id_client INT NOT NULL,
+        position INT NULL
     )
 ");

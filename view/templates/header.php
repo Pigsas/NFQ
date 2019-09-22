@@ -1,4 +1,6 @@
-
+<?php
+date_default_timezone_set('Europe/Vilnius')
+?>
 <!doctype html>
 <html lang="en">
   <head>
