@@ -1,9 +1,10 @@
 <?php
 
 $title = "Statistikos puslapis";
+include 'view/templates/header.php';
 include 'includes/autoloader.php';
 include 'database.php';
-include 'view/templates/header.php';
+
  
 ?>
 <div class="container p-5">
