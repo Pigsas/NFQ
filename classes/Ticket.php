@@ -65,12 +65,12 @@ class Ticket extends Database
             die($e->getMessage());
         }
     }
-    static function getTickets($id_specialist, $limit = null)
+    static function getTickets($id_specialist, $limit = null, $completed = 0)
     {
         $data = (new Database)->query("
             SELECT * 
             FROM ticket 
-            WHERE id_specialist = '$id_specialist' AND completed = 0 
+            WHERE id_specialist = '$id_specialist' AND completed = $completed 
             ORDER BY position ASC 
             ".($limit?"LIMIT $limit":"")."
         ")->fetchAll();
@@ -162,5 +162,17 @@ class Ticket extends Database
         ORDER BY position DESC
         LIMIT 1
         ")->fetch()['position'];
+    }
+    static function averageTimeInMeeting($id_specialist){
+        $times = (new Database)->query("
+            SELECT AVG(TIMESTAMPDIFF(MINUTE, meetingTime, meetingEnds)) as minutes, 
+                    DATE_FORMAT(meetingTime, '%H:%i') as date 
+            FROM `ticket` 
+            WHERE id_specialist = $id_specialist AND completed = 1 
+            GROUP BY meetingTime
+            ORDER BY meetingTime ASC
+            ")->fetchAll();
+
+        return $times;
     }
 }
