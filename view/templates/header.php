@@ -2,7 +2,7 @@
 date_default_timezone_set('Europe/Vilnius')
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="lt">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
