@@ -9,7 +9,7 @@ if(empty($_GET['id']))
     header('location: ./');
 }
 
-$ini = parse_ini_file(getcwd().'\config.ini');
+$ini = parse_ini_file(getcwd().'/config.ini');
 $iv = substr(hash('sha256', $ini['iv']), 0, 16);
 $key = hash('sha256', $ini['key']);
 $id = openssl_decrypt($_GET['id'], $ini['cipher'], $key, 0, $iv);

@@ -3,7 +3,7 @@
 include 'view/templates/header.php';
 include 'includes/autoloader.php';
 include 'database.php';
-$ini = parse_ini_file(getcwd().'\config.ini');
+$ini = parse_ini_file(getcwd().'/config.ini');
 $iv = substr(hash('sha256', $ini['iv']), 0, 16);
 $key = hash('sha256', $ini['key']);
 if(!empty($_POST['submitClient']))
